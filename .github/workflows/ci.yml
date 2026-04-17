@@ -1,27 +1,24 @@
-name: CI with Tests and Coverage
+name: CI with Package
 on: [push, pull_request]
 jobs:
-  build-and-test:
+  build-and-package:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: true
-      - name: Install dependencies
-        run: sudo apt-get update && sudo apt-get install -y cmake lcov
+      - name: Install CMake
+        run: sudo apt-get update && sudo apt-get install -y cmake
       - name: Configure
-        run: cmake -H. -B_build -DCMAKE_INSTALL_PREFIX=_install -DBUILD_TESTS=ON -DCMAKE_BUILD_TYPE=Debug
+        run: cmake -H. -B_build -DCMAKE_INSTALL_PREFIX=_install -DBUILD_TESTS=ON
       - name: Build
         run: cmake --build _build
       - name: Test
         run: cmake --build _build --target test -- ARGS=--verbose
-      - name: Generate coverage
-        run: |
-          lcov --capture --directory _build --output-file coverage.info
-          lcov --remove coverage.info "/usr/*" "*/third-party/*" "*/tests/*" --output-file coverage.info
-          lcov --list coverage.info
-      - name: Upload to Coveralls
-        uses: coverallsapp/github-action@v2
+      - name: Package
+        run: cmake --build _build --target package
+      - name: Upload package artifact
+        uses: actions/upload-artifact@v4
         with:
-          github-token: \${{ secrets.GITHUB_TOKEN }}
-          file: coverage.info
+          name: print-package
+          path: _build/*.tar.gz

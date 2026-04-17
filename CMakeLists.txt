@@ -60,3 +60,5 @@ endif()
 add_subdirectory(banking)
 
 include(CPackConfig.cmake)
+
+add_subdirectory(solver)

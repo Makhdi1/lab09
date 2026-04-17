@@ -1,0 +1,110 @@
+name: Release Packages
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  linux-deb:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install CMake
+        run: sudo apt-get update && sudo apt-get install -y cmake
+      - name: Configure
+        run: cmake -H. -B_build -DCMAKE_BUILD_TYPE=Release
+      - name: Build
+        run: cmake --build _build
+      - name: Package DEB
+        run: cd _build && cpack -G DEB
+      - name: Upload DEB
+        uses: actions/upload-artifact@v4
+        with:
+          name: solver-deb
+          path: _build/*.deb
+  linux-rpm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install CMake and rpm
+        run: sudo apt-get update && sudo apt-get install -y cmake rpm
+      - name: Configure
+        run: cmake -H. -B_build -DCMAKE_BUILD_TYPE=Release
+      - name: Build
+        run: cmake --build _build
+      - name: Package RPM
+        run: cd _build && cpack -G RPM
+      - name: Upload RPM
+        uses: actions/upload-artifact@v4
+        with:
+          name: solver-rpm
+          path: _build/*.rpm
+  windows-msi:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Configure
+        run: cmake -H. -B_bbuild -DCMAKE_BUILD_TYPE=Release
+      - name: Build
+        run: cmake --build _build --config Release
+      - name: Package MSI
+        run: cd _build && cpack -G WIX -C Release
+      - name: Upload MSI
+        uses: actions/upload-artifact@v4
+        with:
+          name: solver-msi
+          path: _build/*.msi
+  macos-dmg:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Configure
+        run: cmake -H. -B_build -DCMAKE_BUILD_TYPE=Release
+      - name: Build
+        run: cmake --build _build
+      - name: Package DMG
+        run: cd _build && cpack -G DragNDrop
+      - name: Upload DMG
+        uses: actions/upload-artifact@v4
+        with:
+          name: solver-dmg
+          path: _build/*.dmg
+  source-archives:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Create source archives
+        run: |
+          git archive --format=tar.gz --prefix=solver/ -o solver-src.tar.gz HEAD
+          git archive --format=zip --prefix=solver/ -o solver-src.zip HEAD
+      - name: Upload source archives
+        uses: actions/upload-artifact@v4
+        with:
+          name: solver-src
+          path: |
+            solver-src.tar.gz
+            solver-src.zip
+  create-release:
+    needs: [linux-deb, linux-rpm, windows-msi, macos-dmg, source-archives]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      - name: Display structure of downloaded files
+        run: ls -R artifacts
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            artifacts/solver-deb/*.deb
+            artifacts/solver-rpm/*.rpm
+            artifacts/solver-msi/*.msi
+            artifacts/solver-dmg/*.dmg
+            artifacts/solver-src/*.tar.gz
+            artifacts/solver-src/*.zip
+        env:
+          GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}

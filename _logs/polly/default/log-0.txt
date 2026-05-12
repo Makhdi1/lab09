@@ -1,0 +1,80 @@
+Execute command: [
+  `which`
+  `cmake`
+]
+[/home/makhdi/Makhdi1/workspace/projects/lab07]> "which" "cmake"
+/usr/bin/cmake
+Execute command: [
+  `cmake`
+  `--version`
+]
+[/home/makhdi/Makhdi1/workspace/projects/lab07]> "cmake" "--version"
+cmake version 3.31.6
+
+CMake suite maintained and supported by Kitware (kitware.com/cmake).
+Execute command: [
+  `cmake`
+  `-H.`
+  `-B/home/makhdi/Makhdi1/workspace/projects/lab07/_builds/default`
+  `-DCMAKE_TOOLCHAIN_FILE=/home/makhdi/Makhdi1/workspace/projects/lab07/tools/polly/default.cmake`
+]
+[/home/makhdi/Makhdi1/workspace/projects/lab07]> "cmake" "-H." "-B/home/makhdi/Makhdi1/workspace/projects/lab07/_builds/default" "-DCMAKE_TOOLCHAIN_FILE=/home/makhdi/Makhdi1/workspace/projects/lab07/tools/polly/default.cmake"
+CMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+
+
+-- [polly] Used toolchain: Default
+-- The C compiler identification is GNU 14.2.0
+-- The CXX compiler identification is GNU 14.2.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- [hunter] Calculating Toolchain-SHA1
+-- [hunter] Calculating Config-SHA1
+-- [hunter] HUNTER_ROOT: /home/makhdi/projects/hunter
+-- [hunter] [ Hunter-ID: xxxxxxx | Toolchain-ID: d1e9b55 | Config-ID: 15e3ea4 ]
+-- [hunter] GTEST_ROOT: /home/makhdi/projects/hunter/_Base/xxxxxxx/d1e9b55/15e3ea4/Install (ver.: 1.7.0-hunter-9)
+CMake Error at CMakeLists.txt:76 (add_executable):
+  add_executable cannot create target "demo" because another target with the
+  same name already exists.  The existing target is an executable created in
+  source directory "/home/makhdi/Makhdi1/workspace/projects/lab07".  See
+  documentation for policy CMP0002 for more details.
+
+
+CMake Deprecation Warning at banking/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+
+
+CMake Deprecation Warning at solver/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+
+
+CMake Warning at /usr/share/cmake-3.31/Modules/CPack.cmake:510 (message):
+  CPack.cmake has already been included!!
+Call Stack (most recent call first):
+  solver/CMakeLists.txt:22 (include)
+
+
+-- Configuring incomplete, errors occurred!

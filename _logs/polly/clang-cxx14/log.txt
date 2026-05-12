@@ -1,0 +1,45 @@
+Execute command: [
+  `which`
+  `cmake`
+]
+[/home/makhdi/Makhdi1/workspace/projects/lab07]> "which" "cmake"
+/usr/bin/cmake
+Execute command: [
+  `cmake`
+  `--version`
+]
+[/home/makhdi/Makhdi1/workspace/projects/lab07]> "cmake" "--version"
+cmake version 3.31.6
+
+CMake suite maintained and supported by Kitware (kitware.com/cmake).
+Execute command: [
+  `cmake`
+  `-H.`
+  `-B/home/makhdi/Makhdi1/workspace/projects/lab07/_builds/clang-cxx14`
+  `-GUnix Makefiles`
+  `-DCMAKE_TOOLCHAIN_FILE=/home/makhdi/Makhdi1/workspace/projects/lab07/tools/polly/clang-cxx14.cmake`
+]
+[/home/makhdi/Makhdi1/workspace/projects/lab07]> "cmake" "-H." "-B/home/makhdi/Makhdi1/workspace/projects/lab07/_builds/clang-cxx14" "-GUnix Makefiles" "-DCMAKE_TOOLCHAIN_FILE=/home/makhdi/Makhdi1/workspace/projects/lab07/tools/polly/clang-cxx14.cmake"
+CMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+
+
+-- [polly] Used toolchain: clang / c++14 support
+
+clang not found
+
+CMake Error at tools/polly/utilities/polly_fatal_error.cmake:10 (message):
+Call Stack (most recent call first):
+  tools/polly/compiler/clang.cmake:23 (polly_fatal_error)
+  tools/polly/clang-cxx14.cmake:20 (include)
+  /usr/share/cmake-3.31/Modules/CMakeDetermineSystem.cmake:146 (include)
+  CMakeLists.txt:27 (project)
+-- Configuring incomplete, errors occurred!
+
+
+CMake Error: CMake was unable to find a build program corresponding to "Unix Makefiles".  CMAKE_MAKE_PROGRAM is not set.  You probably need to select a different build tool.

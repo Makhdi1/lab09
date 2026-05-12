@@ -4,7 +4,6 @@
 
 ## 1. Подготовка репозитория
 
-```bash
 cd ~/projects
 git clone https://github.com/Makhdi1/lab05 lab06
 cd lab06
@@ -33,6 +32,7 @@ set(PRINT_VERSION_STRING "v${PRINT_VERSION}")\
 head -20 CMakeLists.txt
 
 Вывод:
+```
 set(PRINT_VERSION_MAJOR 0)
 set(PRINT_VERSION_MINOR 1)
 set(PRINT_VERSION_PATCH 0)
@@ -42,26 +42,30 @@ set(PRINT_VERSION_STRING "v0.1.0.0")
 cmake_minimum_required(VERSION 3.4)
 project(print)
 ...
+```
 
 
 
 #Создание файлов описания
-
+```
 echo 'static C++ library for printing' > DESCRIPTION
 cat DESCRIPTION
-
+```
 
 Вывод:
 
+```
 static C++ library for printing
 
 set DATE (LANG=en_US date +'%a %b %d %Y')
 echo "* $DATE Makhdi1 <email@example.com> 0.1.0.0" > ChangeLog.md
 echo "- Initial RPM release" >> ChangeLog.md
 cat ChangeLog.md
+```
 
 Вывод:
 
+```
 * Thu Apr 17 2025 Makhdi1 <email@example.com> 0.1.0.0
 - Initial RPM release
 
@@ -70,9 +74,10 @@ cat ChangeLog.md
 # Создание CPackConfig.cmake
 
 cat CPackConfig.cmake
-
+```
 
 Вывод:
+```
 include(InstallRequiredSystemLibraries)
 
 set(CPACK_PACKAGE_CONTACT email@example.com)
@@ -98,14 +103,16 @@ set(CPACK_DEBIAN_PACKAGE_PREDEPENDS "cmake >= 3.0")
 set(CPACK_DEBIAN_PACKAGE_RELEASE 1)
 
 include(CPack)
+```
 
 #Локальная сборка и пакетирование
-
+```
 rm -rf _build
 cmake -H. -B_build -DCPACK_GENERATOR="TGZ"
+```
 
 Вывод:
-
+```
 -- The C compiler identification is GNU 11.4.0
 -- The CXX compiler identification is GNU 11.4.0
 ...
@@ -117,26 +124,27 @@ cmake -H. -B_build -DCPACK_GENERATOR="TGZ"
 
 
 cmake --build _build
+```
 
 Вывод:
 
-
+```
 [ 16%] Built target print
 [ 33%] Built target gtest
 [ 50%] Built target gtest_main
 [ 66%] Built target gmock
 [ 83%] Built target gmock_main
 [100%] Built target check
-
+```
 
 
 #Фиксация и тегирование
-
+```
 git add .
 git commit -m "added cpack config"
-
+```
 Вывод:
-
+```
 [main abc1234] added cpack config
  5 files changed, 45 insertions(+)
  create mode 100644 CPackConfig.cmake
@@ -146,9 +154,9 @@ git commit -m "added cpack config"
 
 git tag v0.1.0.0
 git push origin main --tags
-
+```
 Вывод:
-
+```
 Enumerating objects: 10, done.
 Counting objects: 100% (10/10), done.
 Delta compression using up to 8 threads
@@ -158,9 +166,9 @@ Total 6 (delta 2), reused 0 (delta 0)
 To https://github.com/Makhdi1/lab06
    def5678..abc1234  main -> main
  * [new tag]         v0.1.0.0 -> v0.1.0.0
-
+```
 
 Workflow обновлён. 
 После push в Actions создаётся артефакт print-package с .tar.gz пакетом.
 
-Ссылка на репозиторий: https://github.com/Makhdi1/lab06
+Ссылка на репозиторий: https://github.com/Makhdi1/lab07

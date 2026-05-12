@@ -26,6 +26,9 @@ set(PRINT_VERSION_STRING "v${PRINT_VERSION}")
 
 project(print)
 
+hunter_add_package(print)
+
+
 hunter_add_package(GTest)
 find_package(GTest CONFIG REQUIRED)
 

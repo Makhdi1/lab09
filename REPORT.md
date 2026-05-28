@@ -17,14 +17,14 @@
 ```
 cmake -H. -B_build -DCPACK_GENERATOR="TGZ"
 cmake --build _build --target package
+```
 4. Создание тега
-bash
-
+```
 git tag -s v0.1.0.0
 git push origin main --tags
-
+```
 5. Создание релиза
-
+```
 Релиз создан через github-release:
 
     Имя: libprint
@@ -32,19 +32,20 @@ git push origin main --tags
     Версия: v0.1.0.0
 
     Артефакт: print-Linux-x86_64.tar.gz (474 kB)
-
+```
 Результаты
-
+```
     Освоен процесс создания GitHub Release
 
     Настроена GPG подпись тегов
 
     Создан релиз с артефактом
-
-Ссылки
-
+```
+#Ссылки
+```
     GitHub Releases
 
     Репозиторий lab09
 
     Релиз v0.1.0.0' > REPORT.md && git add REPORT.md && git commit -m "Fix lab09 report" && git push origin main
+```

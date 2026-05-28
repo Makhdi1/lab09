@@ -1,113 +1,50 @@
-# Лабораторная работа 8 (ypa)
+# Лабораторная работа IX
 
-## Изучение систем автоматизации развёртывания и управления приложениями на примере Docker
+## GitHub Release
 
 ### Цель работы
-Изучение систем автоматизации развёртывания и управления приложениями на примере Docker.
+Изучение процесса создания артефактов на примере GitHub Release.
 
-### Выполнение работы
+### Выполнение
 
-#### 1. Настройка окружения
-Создан публичный репозиторий lab08 на GitHub. Выполнено клонирование lab07 как основы:
-```bash
-cd /home/makhdi/Makhdi1/workspace
-git clone https://github.com/Makhdi1/lab07 lab08
-cd lab08
-git submodule update --init
-git remote remove origin
-git remote add origin https://github.com/Makhdi1/lab08.git
+#### 1. Создание репозитория
+Создан репозиторий lab09, склонирован из lab08.
+
+#### 2. Настройка GPG
+Сгенерирован GPG ключ RSA 3072, публичный ключ добавлен в GitHub.
+
+#### 3. Сборка пакета
 ```
+cmake -H. -B_build -DCPACK_GENERATOR="TGZ"
+cmake --build _build --target package
+4. Создание тега
+bash
 
-#### 2. Создание Dockerfile
-Создан Dockerfile для сборки образа приложения print:
-```dockerfile
-FROM ubuntu:18.04
+git tag -s v0.1.0.0
+git push origin main --tags
 
-RUN apt update
-RUN apt install -yy gcc g++ cmake
+5. Создание релиза
 
-COPY . print/
-WORKDIR print
+Релиз создан через github-release:
 
-RUN sed -i "/hunter_add_package(print)/d" CMakeLists.txt
+    Имя: libprint
 
-RUN cmake -H. -B_build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=_install -DBUILD_TESTS=OFF
-RUN cmake --build _build
-RUN cmake --build _build --target install
+    Версия: v0.1.0.0
 
-ENV LOG_PATH /home/logs/log.txt
+    Артефакт: print-Linux-x86_64.tar.gz (474 kB)
 
-VOLUME /home/logs
+Результаты
 
-WORKDIR _install/bin
+    Освоен процесс создания GitHub Release
 
-ENTRYPOINT ./demo
-```
+    Настроена GPG подпись тегов
 
-#### 3. Сборка Docker образа
-```bash
-docker build -t logger .
-```
-Образ успешно собран, размер 353MB.
+    Создан релиз с артефактом
 
-#### 4. Запуск контейнера
-```bash
-mkdir -p logs
-docker run -it -v "$(pwd)/logs/:/home/logs/" logger
-```
-Введены тестовые данные: text1, text2, text3. Контейнер записал логи в примонтированный том.
+Ссылки
 
-#### 5. Просмотр информации об образе
-```bash
-docker images
-docker inspect logger
-```
+    GitHub Releases
 
-#### 6. Просмотр логов
-```bash
-cat logs/log.txt
-```
-Логи успешно записаны в файл на хостовой машине через примонтированный volume.
+    Репозиторий lab09
 
-#### 7. Настройка Travis CI
-Создан файл `.travis.yml`:
-```yaml
-language: cpp
-
-services:
-  - docker
-
-script:
-  - docker build -t logger .
-```
-
-#### 8. Обновление README.md
-Заменены ссылки lab07 на lab08:
-```bash
-sed -i "s/lab07/lab08/g" README.md
-```
-
-#### 9. Публикация
-```bash
-git add Dockerfile .travis.yml
-git commit -m "adding Dockerfile"
-git push origin main
-```
-
-### Проблемы и их решение
-
-1. **Ошибка hunter_add_package(print)**: Внутри Docker-образа Hunter не находил версию пакета print 0.1.0.0. Решение: удалить строку `hunter_add_package(print)` из CMakeLists.txt перед сборкой в Dockerfile.
-
-2. **Ветка master vs main**: Репозиторий использует ветку main, а не master. Решение: использовать `git push origin main`.
-
-### Результаты
-- Создан Dockerfile для приложения print
-- Образ logger успешно собран (353MB)
-- Контейнер запущен и протестирован с записью логов в volume
-- Настроен Travis CI для автоматической сборки образа
-- Логи контейнера успешно сохраняются на хостовой машине
-
-### Ссылки
-- [Docker Get Started](https://docs.docker.com/get-started/)
-- [Docker Hub](https://hub.docker.com/)
-
+    Релиз v0.1.0.0' > REPORT.md && git add REPORT.md && git commit -m "Fix lab09 report" && git push origin main
